@@ -1,0 +1,47 @@
+{
+  "name": "@jaimebboyjt/double-texture-materials",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": false,
+  "description": "A Three.js library for combining textures easily",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "keywords": [
+    "3d",
+    "threejs",
+    "three"
+  ],
+  "maintainers": [
+    "Jaime Torrealba (https://github.com/JaimeTorrealba)"
+  ],
+  "scripts": {
+    "dev": "cd ./playground && vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "main": "./dist/double-texture-materials.js",
+  "module": "./dist/double-texture-materials.js",
+  "exports": {
+    ".": {
+      "import": "./dist/double-texture-materials.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "three": ">=0.181.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.24",
+    "@types/three": "^0.181.0",
+    "rollup-plugin-visualizer": "^6.0.1",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0"
+  },
+  "dependencies": {
+    "tweakpane": "^4.0.5"
+  }
+}
