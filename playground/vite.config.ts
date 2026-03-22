@@ -7,7 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 export default defineConfig({
     resolve: {
         alias: {
-          'double-texture-materials': resolve(__dirname, '../src/index.ts'),
+          'three-double-texture-materials': resolve(__dirname, '../src/index.ts'),
         },
       },
 })

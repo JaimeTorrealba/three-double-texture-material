@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js'
 import { Pane } from "tweakpane";
-import { DTMeshStandardMaterial } from 'three-double-texture-materials';
+import { DTMeshPhysicalMaterial } from 'three-double-texture-materials';
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -18,6 +18,13 @@ scene.add(ambientLight);
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
 scene.add(directionalLight);
+
+const boxGeometry = new THREE.BoxGeometry(1,  1, 1);
+const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+const box = new THREE.Mesh(boxGeometry, boxMaterial);
+box.position.set(0,0,-2.5)
+scene.add(box);
+
 
 /**
  * Sizes
@@ -50,14 +57,14 @@ const pane = new Pane();
 const options = {
   progress: 0.5,
   mergedSize: 0.1,
-  noiseScale: 1,
+  noiseScale: 0.5,
   // Textures tweaks
   roughness: 1,
   metalness: 0,
   aoMapIntensity: 1,
   normalScaleX: 1,
   normalScaleY: 1,
-  displacementScale: 0.25,
+  displacementScale: 0.01,
 };
 
 /**
@@ -107,8 +114,8 @@ baseTextureFolder.addBinding(options, "normalScaleY", {
 });
 baseTextureFolder.addBinding(options, "displacementScale", {
   min: 0,
-  max: 5,
-  step: 0.1,
+  max: 0.1,
+  step: 0.01,
 }).on("change", ({ value }) => {
   newStandardMaterial.displacementScale = value;
 });
@@ -137,25 +144,25 @@ baseTextureFolder.addBinding(options, "metalness", {
  * Texturas
  */
 const textureLoader = new THREE.TextureLoader();
-const baseTexture = textureLoader.load("/textures/bark/color.png");
+const baseTexture = textureLoader.load("/textures/glass/color.jpg");
 baseTexture.wrapS = THREE.RepeatWrapping;
 baseTexture.wrapT = THREE.RepeatWrapping;
-baseTexture.repeat.set(2,2);
-const displacementBaseTexture = textureLoader.load("/textures/bark/displacement.png");
-const normalBaseTexture = textureLoader.load("/textures/bark/normal.png");
-const aoBaseTexture = textureLoader.load("/textures/bark/ao.png");
-const roughnessBaseTexture = textureLoader.load("/textures/bark/roughness.png");
+baseTexture.repeat.set(2, 2);
+const displacementBaseTexture = textureLoader.load("/textures/glass/displacement.png");
+const normalBaseTexture = textureLoader.load("/textures/glass/normal.png");
+const aoBaseTexture = textureLoader.load("/textures/glass/ao.jpg");
+const roughnessBaseTexture = textureLoader.load("/textures/glass/roughness.png");
 
-const colorSecondaryTexture = textureLoader.load("/textures/moss/color.png", (tex) => {
+const colorSecondaryTexture = textureLoader.load("/textures/ice/color.jpg", (tex) => {
   // TODO: Texture is not being repeated
 });
 colorSecondaryTexture.wrapS = THREE.RepeatWrapping;
 colorSecondaryTexture.wrapT = THREE.RepeatWrapping;
-colorSecondaryTexture.repeat.set(2,2);
-const displacementSecondaryTexture = textureLoader.load("/textures/moss/displacement.png");
-const normalSecondaryTexture = textureLoader.load("/textures/moss/normal.png");
-const aoSecondaryTexture = textureLoader.load("/textures/moss/ao.png");
-const roughnessSecondaryTexture = textureLoader.load("/textures/moss/roughness.png");
+colorSecondaryTexture.repeat.set(2, 2);
+const displacementSecondaryTexture = textureLoader.load("/textures/ice/displacement.png");
+const normalSecondaryTexture = textureLoader.load("/textures/ice/normal.jpg");
+const aoSecondaryTexture = textureLoader.load("/textures/ice/ao.jpg");
+const roughnessSecondaryTexture = textureLoader.load("/textures/ice/roughness.jpg");
 
 // const noiseMap = textureLoader.load("/textures/perlin.png");
 // noiseMap.wrapS = THREE.RepeatWrapping;
@@ -164,9 +171,9 @@ const roughnessSecondaryTexture = textureLoader.load("/textures/moss/roughness.p
 
 /**
  * Mesh
- */
-const geometry = new THREE.CylinderGeometry(3, 3, 8, 128, 128, true);
-const newStandardMaterial = new DTMeshStandardMaterial({
+*/
+const geometry = new THREE.PlaneGeometry(3, 3, 128, 128);
+const newStandardMaterial = new DTMeshPhysicalMaterial({
   // noiseMap: noiseMap,
   mergedSize: 0.1,
   noiseScale: 1,
@@ -189,18 +196,26 @@ const newStandardMaterial = new DTMeshStandardMaterial({
   displacementScale: options.displacementScale,
   metalness: options.metalness,
   normalScale: new THREE.Vector2(options.normalScaleX, options.normalScaleY),
+  transmission: 1,
+  thickness: 0.5,
+  roughness: 0,
+  // envMap: hdrEquirect,
+  clearcoatNormalMap: normalBaseTexture,
+  envMapIntensity: 1.5,
+  clearcoat: 0.5,
+  clearcoatRoughness: 0.1,
+  clearcoatNormalScale: 0.3,
 
 });
 
 const mesh = new THREE.Mesh(geometry, newStandardMaterial);
-mesh.rotation.y = Math.PI * 0.5;
 scene.add(mesh);
 
 /**
  * Camera
  */
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
-camera.position.z = 10
+camera.position.z = 2.5
 scene.add(camera)
 
 /**
@@ -240,6 +255,9 @@ control.enableRotate = true;
 function animate() {
   control.update();
   requestAnimationFrame(animate);
+  box.rotation.y += 0.01;
+  box.rotation.x += 0.01;
+
   renderer.render(scene, camera);
 }
 animate();

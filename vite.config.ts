@@ -24,8 +24,8 @@ export default defineConfig({
     },
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'double-texture-materials',
-      fileName: 'double-texture-materials',
+      name: 'three-double-texture-materials',
+      fileName: 'three-double-texture-materials',
     },
   },
 })

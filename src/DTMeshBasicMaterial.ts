@@ -128,7 +128,7 @@ class DTMeshBasicMaterial extends MeshBasicMaterial {
     }
   }
 
-  setmergedSize(value: number) {
+  setMergedSize(value: number) {
     this.mergedSize = value
     if (this.userData.shader) {
       this.userData.shader.uniforms.mergedSize.value = value

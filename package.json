@@ -1,5 +1,5 @@
 {
-  "name": "@jaimebboyjt/double-texture-materials",
+  "name": "@jaimebboyjt/three-double-texture-materials",
   "version": "0.0.1",
   "license": "MIT",
   "private": false,
@@ -21,11 +21,11 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
-  "main": "./dist/double-texture-materials.js",
-  "module": "./dist/double-texture-materials.js",
+  "main": "./dist/three-double-texture-materials.js",
+  "module": "./dist/three-double-texture-materials.js",
   "exports": {
     ".": {
-      "import": "./dist/double-texture-materials.js"
+      "import": "./dist/three-double-texture-materials.js"
     }
   },
   "files": [

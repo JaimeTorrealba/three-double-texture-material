@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js'
 import { Pane } from "tweakpane";
-import { DTMeshBasicMaterial } from 'double-texture-materials';
+import { DTMeshBasicMaterial } from 'three-double-texture-materials';
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -72,7 +72,7 @@ progressFolder.addBinding(options, "mergedSize", {
   max: 0.75,
   step: 0.01,
 }).on("change", ({ value }) => {
-  newStandardMaterial.setmergedSize(value);
+  newStandardMaterial.setMergedSize(value);
 });
 progressFolder.addBinding(options, "noiseScale", {
   min: 0,

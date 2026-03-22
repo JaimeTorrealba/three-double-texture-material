@@ -1,7 +1,7 @@
 import {
   Texture,
-  MeshStandardMaterialParameters,
-  MeshStandardMaterial,
+  MeshPhysicalMaterialParameters,
+  MeshPhysicalMaterial,
   Material,
   DataTexture,
   RepeatWrapping,
@@ -11,7 +11,7 @@ import perlinUrl from './assets/perlin.png?inline'
 
 type NullableTexture = Texture | null
 
-interface DTMeshStandardMaterialParams extends MeshStandardMaterialParameters {
+interface DTMeshPhysicalMaterialParams extends MeshPhysicalMaterialParameters {
   secondMap?: NullableTexture
   secondDisplacementMap?: NullableTexture
   secondNormalMap?: NullableTexture
@@ -24,7 +24,7 @@ interface DTMeshStandardMaterialParams extends MeshStandardMaterialParameters {
   noiseScale?: number
 }
 
-class DTMeshStandardMaterial extends MeshStandardMaterial {
+class DTMeshPhysicalMaterial extends MeshPhysicalMaterial {
 
   secondMap: NullableTexture
   secondDisplacementMap: NullableTexture
@@ -40,7 +40,7 @@ class DTMeshStandardMaterial extends MeshStandardMaterial {
     shader?: { uniforms: Record<string, { value: unknown }> }
   }
 
-  constructor(params: DTMeshStandardMaterialParams = {}) {
+  constructor(params: DTMeshPhysicalMaterialParams = {}) {
     const { secondMap, secondDisplacementMap, secondNormalMap, secondRoughnessMap, secondMetalnessMap, secondAoMap, noiseMap, progress, mergedSize, noiseScale, ...baseParams } = params
     super(baseParams)
 
@@ -316,4 +316,4 @@ class DTMeshStandardMaterial extends MeshStandardMaterial {
   }
 }
 
-export { DTMeshStandardMaterial };
+export { DTMeshPhysicalMaterial };
