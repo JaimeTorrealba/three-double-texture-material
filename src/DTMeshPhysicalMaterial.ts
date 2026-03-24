@@ -295,14 +295,14 @@ class DTMeshPhysicalMaterial extends MeshPhysicalMaterial {
     }
   }
 
-  setblend(value: number) {
+  setBlend(value: number) {
     this.blend = value
     if (this.userData.shader) {
       this.userData.shader.uniforms.blend.value = value
     }
   }
 
-  feather(value: number) {
+  setFeather(value: number) {
     this.feather = value
     if (this.userData.shader) {
       this.userData.shader.uniforms.feather.value = value
