@@ -14,8 +14,8 @@ type NullableTexture = Texture | null
 interface DTMeshBasicMaterialParams extends MeshBasicMaterialParameters {
   secondMap?: NullableTexture
   noiseMap?: NullableTexture
-  progress?: number
-  mergedSize?: number
+  blend?: number
+  feather?: number
   noiseScale?: number
 }
 
@@ -23,15 +23,15 @@ class DTMeshBasicMaterial extends MeshBasicMaterial {
 
   secondMap: NullableTexture
   noiseMap: NullableTexture
-  progress: number
-  mergedSize: number
+  blend: number
+  feather: number
   noiseScale: number
   declare userData: Material['userData'] & {
     shader?: { uniforms: Record<string, { value: unknown }> }
   }
 
   constructor(params: DTMeshBasicMaterialParams = {}) {
-    const { secondMap, noiseMap, progress, mergedSize, noiseScale, ...baseParams } = params
+    const { secondMap, noiseMap, blend, feather, noiseScale, ...baseParams } = params
     super(baseParams)
 
     this.secondMap = secondMap || null
@@ -55,8 +55,8 @@ class DTMeshBasicMaterial extends MeshBasicMaterial {
         }
       })
     }
-    this.progress = progress ?? 0.5
-    this.mergedSize = mergedSize ?? 0.1
+    this.blend = blend ?? 0.5
+    this.feather = feather ?? 0.1
     this.noiseScale = noiseScale ?? 1
 
     this.onBeforeCompile = (shader) => {
@@ -68,8 +68,8 @@ class DTMeshBasicMaterial extends MeshBasicMaterial {
       // ---- UNIFORMS ----
       shader.uniforms.secondMap = { value: this.secondMap }
       shader.uniforms.noiseMap = { value: this.noiseMap }
-      shader.uniforms.progress = { value: this.progress }
-      shader.uniforms.mergedSize = { value: this.mergedSize }
+      shader.uniforms.blend = { value: this.blend }
+      shader.uniforms.feather = { value: this.feather }
       shader.uniforms.noiseScale = { value: this.noiseScale }
 
       this.userData.shader = shader
@@ -77,8 +77,8 @@ class DTMeshBasicMaterial extends MeshBasicMaterial {
       // ---- INJECT UNIFORMS (only declare samplers that are bound) ----
       shader.fragmentShader =
         `
-        uniform float progress;
-        uniform float mergedSize;
+        uniform float blend;
+        uniform float feather;
         uniform float noiseScale;
         ${this.secondMap ? 'uniform sampler2D secondMap;' : ''}
         uniform sampler2D noiseMap;
@@ -89,8 +89,8 @@ class DTMeshBasicMaterial extends MeshBasicMaterial {
 
         vec2 blendMasks(vec2 uv) {
           float noiseVal = sampleNoise(uv);
-          float maskLo = smoothstep(progress - mergedSize, progress, noiseVal);
-          float maskHi = smoothstep(progress, progress + mergedSize, noiseVal);
+          float maskLo = smoothstep(blend - feather, blend, noiseVal);
+          float maskHi = smoothstep(blend, blend + feather, noiseVal);
           float borderMask = maskLo * (1.0 - maskHi);
           return vec2(maskHi, borderMask);
         }
@@ -121,17 +121,17 @@ class DTMeshBasicMaterial extends MeshBasicMaterial {
     }
   }
 
-  setMerge(value: number) {
-    this.progress = value
+  setBlend(value: number) {
+    this.blend = value
     if (this.userData.shader) {
-      this.userData.shader.uniforms.progress.value = value
+      this.userData.shader.uniforms.blend.value = value
     }
   }
 
-  setMergedSize(value: number) {
-    this.mergedSize = value
+  setFeather(value: number) {
+    this.feather = value
     if (this.userData.shader) {
-      this.userData.shader.uniforms.mergedSize.value = value
+      this.userData.shader.uniforms.feather.value = value
     }
   }
   setNoiseScale(value: number) {

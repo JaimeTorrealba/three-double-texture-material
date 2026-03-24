@@ -1,6 +1,6 @@
-# ThreeScatter Contributing Guide
+# Three double texture materials Contributing Guide
 
-Hi there!! If you are reading this guide, you are probably interested in contributing to ThreeScatter. You're awesome 🤩.
+Hi there!! If you are reading this guide, you are probably interested in contributing to `three-double-texture-materials`. You're awesome 🤩.
 
 No contribution is too small, whether it is a typo in the docs, a bug report or refactoring a piece of code, every contribution is welcome, just make sure to follow the guidelines below ✌️.
 

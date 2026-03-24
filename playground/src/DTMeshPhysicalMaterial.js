@@ -55,8 +55,8 @@ window.addEventListener("resize", () => {
 const pane = new Pane();
 
 const options = {
-  progress: 0.5,
-  mergedSize: 0.1,
+  blend: 0.5,
+  feather: 0.1,
   noiseScale: 0.5,
   // Textures tweaks
   roughness: 1,
@@ -70,25 +70,25 @@ const options = {
 /**
  * Merged texture params
  */
-const progressFolder = pane.addFolder({ title: "Merged Texture params" });
-progressFolder.addBinding(options, "progress", {
+const blendFolder = pane.addFolder({ title: "Merged Texture params" });
+blendFolder.addBinding(options, "blend", {
   min: 0,
   max: 1,
   step: 0.01,
 }).on("change", ({ value }) => {
-  newStandardMaterial.setMerge(value);
+  newStandardMaterial.setBlend(value);
 });
-progressFolder.addBinding(options, "mergedSize", {
+blendFolder.addBinding(options, "feather", {
   min: 0.1,
   max: 0.75,
   step: 0.01,
 }).on("change", ({ value }) => {
-  newStandardMaterial.setMergedSize(value);
+  newStandardMaterial.setFeather(value);
 });
-progressFolder.addBinding(options, "noiseScale", {
+blendFolder.addBinding(options, "noiseScale", {
   min: 0,
-  max: 5,
-  step: 0.01,
+  max: 1,
+  step: 0.001,
 }).on("change", ({ value }) => {
   newStandardMaterial.setNoiseScale(value);
 });
@@ -175,7 +175,7 @@ const roughnessSecondaryTexture = textureLoader.load("/textures/ice/roughness.jp
 const geometry = new THREE.PlaneGeometry(3, 3, 128, 128);
 const newStandardMaterial = new DTMeshPhysicalMaterial({
   // noiseMap: noiseMap,
-  mergedSize: 0.1,
+  feather: 0.1,
   noiseScale: 1,
   // BASE MAPS
   map: baseTexture,

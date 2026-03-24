@@ -4,6 +4,14 @@
   "license": "MIT",
   "private": false,
   "description": "A Three.js library for combining textures easily",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JaimeTorrealba/three-double-texture-material.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JaimeTorrealba/three-double-texture-material/issues"
+  },
+  "homepage": "https://github.com/JaimeTorrealba/three-double-texture-material",
   "publishConfig": {
     "access": "public"
   },
