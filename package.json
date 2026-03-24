@@ -1,6 +1,6 @@
 {
   "name": "@jaimebboyjt/three-double-texture-materials",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "private": false,
   "description": "A Three.js library for combining textures easily",
